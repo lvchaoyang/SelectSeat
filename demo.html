@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>电影选座</title>
+	<link rel="stylesheet" href="css/bootstrap.css">
+	<style type="text/css">
+		.main{
+			min-width: 1138px;
+			margin-top: 20px;
+			border:1px solid #666;
+		}
+		.side{
+			border-left: 1px dashed #ccc;
+		}
+		/*位置图标说明*/
+		ul.seat-message{
+			margin: 30px 0;
+		}
+		ul.seat-message li.message{
+			list-style: none;
+			height: 26px;
+			
+		}
+		li.message span{
+			line-height: 26px;
+		}
+		/*可选*/
+		li.choiceable-seat{
+			background: url(img/choiceable.png) no-repeat 55px;
+		}
+		/*已售*/
+		li.sold-seat{
+			background: url(img/sold.png) no-repeat 55px;
+		}
+		/*已选*/
+		li.choiced-seat{
+			background: url(img/choiced.png) no-repeat 55px 0;
+		}
+
+
+		/*银幕*/
+		.screen{
+			padding-top: 50px;
+			font-size: 18px;
+			background: url(img/screen.png) no-repeat 20px 0;
+		}
+		/*座位*/
+		.seat-row{
+			margin-top:8px;
+		}
+		.seat-row span{
+			display: inline-block;
+			width: 30px;
+			height: 26px;
+			margin: 0 5px;
+			cursor: pointer;
+			line-height: 26px;
+		}
+		/*未选*/
+		.seat-row span.seat-empty{
+			background: url(img/choiceable.png);
+		}
+		/*已选*/
+		.seat-row span.seat-choiced{
+			background: url(img/choiced.png) !important;
+		}
+		/*已售*/
+		.seat-row span.seat-sold{
+			background: url(img/sold.png);
+		}
+		/*过道不显示位子*/
+		.none{
+			opacity: 0;
+		}
+
+		/*右侧*/
+		.side{
+			padding-top: 20px;
+		}
+		.side .media-body{
+			padding-top: 8px;
+		}
+		.media-body h4{
+			font-weight: bold;
+		}
+		.side .movie-messige{
+			padding-top: 15px;
+			border-bottom: 1px dashed #ccc;
+		}
+		/*已选座位*/
+		.has-choice{
+			padding-top: 15px;
+		}
+		.seat-text{
+			line-height: 30px;
+		}
+		.ticket-container{
+			display: inline-block;
+		    width: 82%;
+    		vertical-align: top;
+		}
+		.ticket-container span.ticket{
+			display: inline-block;
+			width: 60px;
+			height: 30px;
+			font-size: 12px;
+			line-height: 30px;
+			text-align: center;
+			margin:0 12px 10px 0;
+			color:#f03d37;
+			background: url(img/ticket-bg.png);
+		}
+		/*总票价*/
+		.ticket-price{
+			border-bottom: 1px dashed #ccc;
+		}
+		.ticket-price span.price{
+			font-size: 24px;
+			color: #f03d37;
+		}
+		/*确认按钮*/
+		.confirm-btn{
+			padding: 15px;
+		}
+		.confirm-btn .btn-sure{
+			width: 80%;
+			height: 42px;
+			border-radius: 21px;
+			margin-top: 15px;
+			margin-bottom: 30px;
+			outline: none;
+			color: #ffffff;
+			background: #f03d37;
+		}
+	</style>
+</head>
+<body>
+	<div class="container main">
+		<div class="row">
+			<!-- 左侧 -->
+			<div class="col-xs-8 hall">
+				<!-- 位置图标说明 -->
+				<div class="row seat-explain">
+					<ul class="col-xs-12 seat-message text-center">
+						<li class="col-xs-4 choiceable-seat message"><span>可选座位</span></li>
+						<li class="col-xs-4 sold-seat message"><span>已售座位</span></li>
+						<li class="col-xs-4 choiced-seat message"><span>已选座位</span></li>
+					</ul>
+				</div>
+				<!-- 位置区 -->
+				<div class="row seats-container">
+					<!-- 屏幕区 -->
+					<div class="col-xs-10 col-xs-offset-1 screen-container">
+						<div class="screen text-center">银幕中央</div>
+					</div>
+					<!-- 位子区 -->
+					<div class="col-xs-12 seats-wrapper">
+						<!-- 第一排 -->
+						<div class="row seat-row" data-row="1">
+							<div class="col-xs-1 text-center">
+								<span class="row-num">1</span>
+							</div>
+							<div class="col-xs-11">
+								<span class="none"></span>
+								<span class="seat-empty" data-col="1"></span>
+								<span class="seat-empty" data-col="2"></span>
+								<span class="seat-empty" data-col="3"></span>
+								<span class="seat-empty" data-col="4"></span>
+								<span class="seat-empty" data-col="5"></span>
+								<span class="seat-empty" data-col="6"></span>
+								<span class="seat-empty" data-col="7"></span>
+								<span class="seat-empty" data-col="8"></span>
+								<span class="seat-empty" data-col="9"></span>
+								<span class="seat-empty" data-col="10"></span>
+								<span class="seat-empty" data-col="11"></span>
+								<span class="seat-empty" data-col="12"></span>
+								<span class="seat-empty" data-col="13"></span>
+							</div>
+						</div>
+						<!-- 第二排 -->
+						<div class="row seat-row" data-row="2">
+							<div class="col-xs-1 text-center">
+								<span class="row-num">2</span>
+							</div>
+							<div class="col-xs-11">
+								<span class="none"></span>
+								<span class="seat-empty" data-col="1"></span>
+								<span class="seat-empty" data-col="2"></span>
+								<span class="seat-empty" data-col="3"></span>
+								<span class="seat-empty" data-col="4"></span>
+								<span class="seat-empty" data-col="5"></span>
+								<span class="seat-empty" data-col="6"></span>
+								<span class="seat-empty" data-col="7"></span>
+								<span class="seat-empty" data-col="8"></span>
+								<span class="seat-empty" data-col="9"></span>
+								<span class="seat-empty" data-col="10"></span>
+								<span class="seat-empty" data-col="11"></span>
+								<span class="seat-empty" data-col="12"></span>
+								<span class="seat-empty" data-col="13"></span>
+							</div>
+						</div>
+						<!-- 第三排 -->
+						<div class="row seat-row" data-row="3">
+							<div class="col-xs-1 text-center">
+								<span class="row-num">3</span>
+							</div>
+							<div class="col-xs-11">
+								<span class="none"></span>
+								<span class="seat-empty" data-col="1"></span>
+								<span class="seat-empty" data-col="2"></span>
+								<span class="seat-empty" data-col="3"></span>
+								<span class="seat-empty" data-col="4"></span>
+								<span class="seat-empty" data-col="5"></span>
+								<span class="seat-empty" data-col="6"></span>
+								<span class="seat-empty" data-col="7"></span>
+								<span class="seat-empty" data-col="8"></span>
+								<span class="seat-empty" data-col="9"></span>
+								<span class="seat-empty" data-col="10"></span>
+								<span class="seat-empty" data-col="11"></span>
+								<span class="seat-empty" data-col="12"></span>
+								<span class="seat-empty" data-col="13"></span>
+							</div>
+						</div>
+						<!-- 第四排 -->
+						<div class="row seat-row" data-row="4">
+							<div class="col-xs-1 text-center">
+								<span class="row-num">4</span>
+							</div>
+							<div class="col-xs-11">
+								<span class="seat-empty" data-col="1"></span>
+								<span class="seat-empty" data-col="2"></span>
+								<span class="seat-empty" data-col="3"></span>
+								<span class="seat-empty" data-col="4"></span>
+								<span class="seat-empty" data-col="5"></span>
+								<span class="seat-empty" data-col="6"></span>
+								<span class="seat-empty" data-col="7"></span>
+								<span class="seat-empty" data-col="8"></span>
+								<span class="seat-empty" data-col="9"></span>
+								<span class="seat-empty" data-col="10"></span>
+								<span class="seat-empty" data-col="11"></span>
+								<span class="seat-empty" data-col="12"></span>
+								<span class="seat-empty" data-col="13"></span>
+								<span class="seat-empty" data-col="14"></span>
+							</div>
+						</div>
+						<!-- 第十一排 -->
+						<div class="row seat-row none">
+							<div class="col-xs-1 text-center">
+								<span class="row-num">00</span>
+							</div>
+							<div class="col-xs-11">
+								<span class="none"></span>
+								<span class="none"></span>
+								<span class="none"></span>
+								<span class="none"></span>
+								<span class="none"></span>
+								<span class="none"></span>
+								<span class="none"></span>
+								<span class="none"></span>
+								<span class="none"></span>
+								<span class="none"></span>
+								<span class="none"></span>
+								<span class="none"></span>
+								<span class="none"></span>
+								<span class="none"></span>
+							</div>
+						</div>
+						<!-- 第五排 -->
+						<div class="row seat-row" data-row="5">
+							<div class="col-xs-1 text-center">
+								<span class="row-num">5</span>
+							</div>
+							<div class="col-xs-11">
+								<span class="seat-empty" data-col="1"></span>
+								<span class="seat-empty" data-col="2"></span>
+								<span class="seat-empty" data-col="3"></span>
+								<span class="seat-empty" data-col="4"></span>
+								<span class="seat-empty" data-col="5"></span>
+								<span class="seat-empty" data-col="6"></span>
+								<span class="seat-empty" data-col="7"></span>
+								<span class="none"></span>
+								<span class="none"></span>
+								<span class="seat-empty" data-col="8"></span>
+								<span class="seat-empty" data-col="9"></span>
+								<span class="seat-empty" data-col="10"></span>
+								<span class="seat-empty" data-col="11"></span>
+								<span class="none"></span>
+							</div>
+						</div>
+						<!-- 第六排 -->
+						<div class="row seat-row" data-row="6">
+							<div class="col-xs-1 text-center">
+								<span class="row-num">6</span>
+							</div>
+							<div class="col-xs-11">
+								<span class="seat-empty" data-col="1"></span>
+								<span class="seat-empty" data-col="2"></span>
+								<span class="seat-empty" data-col="3"></span>
+								<span class="seat-empty" data-col="4"></span>
+								<span class="seat-sold" data-col="5"></span>
+								<span class="seat-empty" data-col="6"></span>
+								<span class="seat-empty" data-col="7"></span>
+								<span class="none"></span>
+								<span class="none"></span>
+								<span class="seat-empty" data-col="8"></span>
+								<span class="seat-sold" data-col="9"></span>
+								<span class="seat-empty" data-col="10"></span>
+								<span class="seat-empty" data-col="11"></span>
+								<span class="none"></span>
+							</div>
+						</div>
+						<!-- 第七排 -->
+						<div class="row seat-row" data-row="7">
+							<div class="col-xs-1 text-center">
+								<span class="row-num">7</span>
+							</div>
+							<div class="col-xs-11">
+								<span class="seat-empty" data-col="1"></span>
+								<span class="seat-empty" data-col="2"></span>
+								<span class="seat-empty" data-col="3"></span>
+								<span class="seat-empty" data-col="4"></span>
+								<span class="seat-empty" data-col="5"></span>
+								<span class="seat-empty" data-col="6"></span>
+								<span class="seat-empty" data-col="7"></span>
+								<span class="none"></span>
+								<span class="none"></span>
+								<span class="seat-empty" data-col="8"></span>
+								<span class="seat-empty" data-col="9"></span>
+								<span class="seat-empty" data-col="10"></span>
+								<span class="seat-empty" data-col="11"></span>
+								<span class="none"></span>
+							</div>
+						</div>
+						<!-- 第八排 -->
+						<div class="row seat-row" data-row="8">
+							<div class="col-xs-1 text-center">
+								<span class="row-num">8</span>
+							</div>
+							<div class="col-xs-11">
+								<span class="seat-empty" data-col="1"></span>
+								<span class="seat-empty" data-col="2"></span>
+								<span class="seat-empty" data-col="3"></span>
+								<span class="seat-empty" data-col="4"></span>
+								<span class="seat-empty" data-col="5"></span>
+								<span class="seat-empty" data-col="6"></span>
+								<span class="seat-empty" data-col="7"></span>
+								<span class="none"></span>
+								<span class="none"></span>
+								<span class="seat-empty" data-col="8"></span>
+								<span class="seat-empty" data-col="9"></span>
+								<span class="seat-empty" data-col="10"></span>
+								<span class="seat-empty" data-col="11"></span>
+								<span class="none"></span>
+							</div>
+						</div>
+						<!-- 第九排 -->
+						<div class="row seat-row" data-row="9">
+							<div class="col-xs-1 text-center">
+								<span class="row-num">9</span>
+							</div>
+							<div class="col-xs-11">
+								<span class="seat-empty" data-col="1"></span>
+								<span class="seat-empty" data-col="2"></span>
+								<span class="seat-empty" data-col="3"></span>
+								<span class="seat-empty" data-col="4"></span>
+								<span class="seat-empty" data-col="5"></span>
+								<span class="seat-empty" data-col="6"></span>
+								<span class="seat-empty" data-col="7"></span>
+								<span class="seat-empty" data-col="8"></span>
+								<span class="seat-empty" data-col="9"></span>
+								<span class="seat-empty" data-col="10"></span>
+								<span class="seat-empty" data-col="11"></span>
+								<span class="seat-empty" data-col="12"></span>
+								<span class="seat-empty" data-col="13"></span>
+								<span class="seat-empty" data-col="14"></span>
+							</div>
+						</div>
+						<!-- 第十排 -->
+						<div class="row seat-row" data-row="10">
+							<div class="col-xs-1 text-center">
+								<span class="row-num">10</span>
+							</div>
+							<div class="col-xs-11">
+								<span class="seat-empty" data-col="1"></span>
+								<span class="seat-empty" data-col="2"></span>
+								<span class="seat-empty" data-col="3"></span>
+								<span class="seat-empty" data-col="4"></span>
+								<span class="seat-empty" data-col="5"></span>
+								<span class="seat-empty" data-col="6"></span>
+								<span class="seat-empty" data-col="7"></span>
+								<span class="seat-empty" data-col="8"></span>
+								<span class="seat-empty" data-col="9"></span>
+								<span class="seat-empty" data-col="10"></span>
+								<span class="seat-empty" data-col="11"></span>
+								<span class="seat-empty" data-col="12"></span>
+								<span class="seat-empty" data-col="13"></span>
+								<span class="seat-empty" data-col="14"></span>
+							</div>
+						</div>
+						
+					</div>
+				</div>
+			</div>
+			<!-- 右侧 -->
+			<div class="col-xs-4 side">
+				<!-- 电影信息 -->
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="media">
+							<div class="media-left">
+								<a href="#">
+									<img class="media-object" src="img/movie.jpg" alt="二代妖精">
+								</a>
+							</div>
+							<div class="media-body">
+								<h4 class="media-heading">二代妖精之今生有幸</h4>
+								<p>类型：<span>喜剧、爱情</span></p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row movie-messige">
+					<div class="col-xs-12">
+						<p>影院：<span>XX影院</span></p>
+						<p>放映厅：<span>三号放映厅</span></p>
+						<p>场次：<span>1月11日 15:00</span></p>
+						<p>票价：<span>￥</span><span class="unit-price">30</span><span>/张</span></p>
+					</div>
+				</div>
+				<!-- 选座 -->
+				<div class="row choice-ticket">
+					<div class="col-xs-12">
+						<!-- 已选座位 -->
+						<div class="has-choice">
+							<span class="seat-text">座位：</span>
+							<div class="ticket-container">
+								<!-- <span class="ticket">4排8座</span>
+								<span class="ticket">8排4座</span> -->
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- 总金额 -->
+				<div class="row ticket-price">
+					<div class="col-xs-12">
+						<div class="has-choice">
+							<span>总价：</span>
+							<span class="price"></span>
+						</div>
+					</div>
+				</div>
+
+				<!-- 确认按钮 -->
+				<div class="row confirm-btn">
+					<div class="col-xs-12 text-center">
+						<button type="button" class="btn btn-sure">确认选座</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+	<script>
+		// 获得位置
+		function getSeatText(seat){
+			// 第几排
+			var row = $(seat).parents(".seat-row").attr("data-row");
+			// 第几列
+			var col = $(seat).attr("data-col");
+			// 具体位子
+			var seat = row + "排" + col + "座";
+			return seat;
+		}
+		// 添加选座
+		$(".seat-row").on("click",".seat-empty",function(){
+			
+			// 已选个数
+			var seatNum = $(".seat-choiced").length;
+			if(seatNum<3){
+				$(this).attr("class","seat-choiced");
+				// 得到具体位置
+				var seat = getSeatText(this);
+				// 添加票
+				$(".ticket-container").append('<span class="ticket">' + seat + '</span>');
+				// 总票数
+				var ticketNum = $(".ticket").length;
+				// 单价
+				var unitPrice = $(".unit-price").text();
+				// 总价
+				$(".price").text(ticketNum * unitPrice);
+			}else{
+				alert("一次最多选3张票");
+			}
+			
+		})
+		// 删除选座
+		$(".seat-row").on("click",".seat-choiced",function(){
+			$(this).attr("class","seat-empty");
+			// 得到具体位置
+			var seat = getSeatText(this);
+			// 总票数
+			var ticketNum = $(".ticket").length;
+			// 移除票
+			for(var i = 0;i < ticketNum;i++){
+				if($($(".ticket")[i]).text()==seat){
+					$($(".ticket")[i]).remove();
+				}
+			}
+			var newTicketNum = $(".ticket").length;
+			// 单价
+			var unitPrice = $(".unit-price").text();
+			// 总价
+			$(".price").text(newTicketNum * unitPrice);
+		})
+	</script>
+</body>
+</html>
